@@ -14,7 +14,7 @@ let tarefas = JSON.parse(localStorage.getItem("tarefas")) || [];
 form.addEventListener("submit" , adicionarTarefa);
 
 // Funções 
-function adicionarTarefa() {
+function adicionarTarefa(event) {
     event.preventDefault();
     let texto = inputTarefa.value.trim();
    
@@ -78,12 +78,48 @@ function renderizarTarefas() {
             colunaStatus.innerHTML = '<span class= "badge text-bg-warning">Pendente</span>';
         }
 
+        const colunaAcoes = document.createElement("td");
+        colunaAcoes.classList.add(
+            "text-center"
+        );
+        const botaoConcluir = document.createElement("button");
+        botaoConcluir.textContent = tarefa.concluido ? "Reabrir" : "Concluir";
+        botaoConcluir.classList.add(
+            "btn",
+            tarefa.concluido ? "btn-warning" : "btn-success", 
+            "btn-sn",
+            "me-2"
+        );
+        botaoConcluir.addEventListener(
+            "click",
+            function() {
+                alterarStatus(tarefa.id);
+            }
+
+        );
+        const botaoEditar = document.createElement("button");
+        const botaoExcluir = document.createElement("button");
+
+
+        colunaAcoes.appendChild(botaoConcluir);
+
         linha.appendChild(colunaNumero);
         linha.appendChild(colunaTexto);
         linha.appendChild(colunaStatus);
+        linha.appendChild(colunaAcoes);
 
         listaTarefas.appendChild(linha);
 
 
     });
+
+}
+function alterarStatus(id) {
+    tarefas.forEach(function (tarefa){
+        if (tarefa.id === id) {
+            tarefa.concluido = !tarefa.concluido;
+        }
+    });
+    salvarTarefa();
+    renderizarTarefas();
 }
