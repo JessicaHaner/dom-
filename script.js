@@ -98,10 +98,41 @@ function renderizarTarefas() {
 
         );
         const botaoEditar = document.createElement("button");
+        botaoEditar.textContent = "Editar";
+        botaoEditar.classList.add(
+            "btn",
+            "btn-primary",
+            "btn-sn",
+            "me-2"
+        );
+        botaoEditar.addEventListener(
+            "click",
+            function () {
+                editarTarefa(tarefa.id);
+                
+            }
+        );
         const botaoExcluir = document.createElement("button");
+        botaoExcluir.textContent = "Excluir";
+        botaoExcluir.classList.add(
+            "btn",
+            "btn-danger",
+            "btn-sn",
+            "me-2"
+        );
+        botaoExcluir.addEventListener(
+            "click",
+            function () {
+                excluirTarefa(tarefa.id);
+                
+            }
+        );
 
 
         colunaAcoes.appendChild(botaoConcluir);
+        colunaAcoes.appendChild(botaoEditar);
+        colunaAcoes.appendChild(botaoExcluir);
+
 
         linha.appendChild(colunaNumero);
         linha.appendChild(colunaTexto);
@@ -120,6 +151,37 @@ function alterarStatus(id) {
             tarefa.concluido = !tarefa.concluido;
         }
     });
+    salvarTarefa();
+    renderizarTarefas();
+}
+function editarTarefa(id){
+    const tarefa = tarefas.find(function (tarefa){
+        return tarefa.id === id;
+
+    });
+   
+    const novoTexto = prompt("Digite um novo texto:", tarefa.texto);
+    const texto = novoTexto.trim();
+    if (texto === "") {
+        alert("A tarefa não pode ficar vazia.");
+    }
+    tarefa.texto = texto
+
+    salvarTarefa();
+    renderizarTarefas();
+
+
+
+}
+function excluirTarefa(id) {
+    const confirmar = confirm("Deseja realmente excluir essa tarefa?");
+    if (!confirmar) {
+        return;
+    }
+    tarefas = tarefas.filter(function (tarefa){
+        return tarefa.id !== id;
+    });
+
     salvarTarefa();
     renderizarTarefas();
 }
