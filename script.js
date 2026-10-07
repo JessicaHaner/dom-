@@ -143,6 +143,8 @@ function renderizarTarefas() {
 
 
     });
+    atualizarContador();
+    
 
 }
 function alterarStatus(id) {
@@ -159,12 +161,18 @@ function editarTarefa(id){
         return tarefa.id === id;
 
     });
-   
-    const novoTexto = prompt("Digite um novo texto:", tarefa.texto);
-    const texto = novoTexto.trim();
-    if (texto === "") {
-        alert("A tarefa não pode ficar vazia.");
-    }
+
+    do {
+        const novoTexto = prompt("Digite um novo texto:", tarefa.texto);
+        if (novoTexto === "null") {
+            return;
+         };
+         texto = novoTexto.trim();
+         if (texto === "") {
+     
+         alert("A tarefa não pode ficar vazia.") };
+
+    } while (texto === "");
     tarefa.texto = texto
 
     salvarTarefa();
@@ -184,4 +192,12 @@ function excluirTarefa(id) {
 
     salvarTarefa();
     renderizarTarefas();
+}
+function atualizarContador () {
+    const quantidade = tarefas.length;
+    if (quantidade == 0) {
+        contador.textContent = "Não há tarefas"; 
+    } else {
+        contador.textContent = quantidade + " tarefa"
+    }
 }
